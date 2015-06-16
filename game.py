@@ -64,18 +64,57 @@ class StandardBoard(Board):
 		self.territories = {}
 		self.continents = {}
 		
-		#I'm using the standard names for now, but I may change them
-		#First, set up North America
-		self['Alaska'] = Territory('Alaska')
-		self['Alberta'] = Territory('Alberta')
-		self['Central America'] = Territory('Central America')
-		self['Eastern United States'] = Territory('Eastern United States')
-		self['Greenland'] = Territory('Greenland')
-		self['Northwest Territory'] = Territory('Northwest Territory')
-		self['Ontario'] = Territory('Ontario')
-		self['Quebec'] = Territory('Quebec')
-		self['Western United States'] = Territory('Western United States')
+		#Make a list of territory names for setup
+		names = [
+		'Alaska',
+		'Alberta',
+		'Central America',
+		'Eastern United States',
+		'Greenland',
+		'Northwest Territory',
+		'Ontario',
+		'Quebec',
+		'Western United States',
+		'Argentina',
+		'Brazil',
+		'Peru',
+		'Venezuela',
+		'Great Britain',
+		'Iceland',
+		'Northern Europe',
+		'Scandinavia',
+		'Southern Europe',
+		'Ukraine',
+		'Western Europe',
+		'Congo',
+		'East Africa',
+		'Egypt',
+		'Madagascar',
+		'North Africa',
+		'South Africa',
+		'Afghanistan',
+		'China',
+		'India',
+		'Irkutsk',
+		'Japan',
+		'Kamchatka',
+		'Middle East',
+		'Mongolia',
+		'Siam',
+		'Siberia',
+		'Ural',
+		'Yakutsk',
+		'Eastern Australia',
+		'Indonesia',
+		'New Guinea',
+		'Western Australia']
 		
+		#Create a territory for every name in the list
+		for name in names:
+			self[name] = Territory(name)
+		
+		#Now, we set up the continents
+		#First, North America
 		continent = (
 		self['Alaska'],
 		self['Alberta'],
@@ -90,11 +129,6 @@ class StandardBoard(Board):
 		self['North America'] = Continent('North America', 5, continent)
 		
 		#Next, South America
-		self['Argentina'] = Territory('Argentina')
-		self['Brazil'] = Territory('Brazil')
-		self['Peru'] = Territory('Peru')
-		self['Venezuela'] = Territory('Venezuela')
-		
 		continent = (
 		self['Argentina'],
 		self['Brazil'],
@@ -104,14 +138,6 @@ class StandardBoard(Board):
 		self['South America'] = Continent('South America', 2, continent)
 		
 		#Europe
-		self['Great Britain'] = Territory('Great Britain')
-		self['Iceland'] = Territory('Iceland')
-		self['Northern Europe'] = Territory('Northern Europe')
-		self['Scandinavia'] = Territory('Scandinavia')
-		self['Southern Europe'] = Territory('Southern Europe')
-		self['Ukraine'] = Territory('Ukraine')
-		self['Western Europe'] = Territory('Western Europe')
-		
 		continent = (
 		self['Great Britain'],
 		self['Iceland'],
@@ -124,13 +150,6 @@ class StandardBoard(Board):
 		self['Europe'] = Continent('Europe', 5, continent)
 		
 		#Africa
-		self['Congo'] = Territory('Congo')
-		self['East Africa'] = Territory('East Africa')
-		self['Egypt'] = Territory('Egypt')
-		self['Madagascar'] = Territory('Madagascar')
-		self['North Africa'] = Territory('North Africa')
-		self['South Africa'] = Territory('South Africa')
-		
 		continent = (
 		self['Congo'],
 		self['East Africa'],
@@ -142,19 +161,6 @@ class StandardBoard(Board):
 		self['Africa'] = Continent('Africa', 3, continent)
 		
 		#Asia
-		self['Afghanistan'] = Territory('Afghanistan')
-		self['China'] = Territory('China')
-		self['India'] = Territory('India')
-		self['Irkutsk'] = Territory('Irkutsk')
-		self['Japan'] = Territory('Japan')
-		self['Kamchatka'] = Territory('Kamchatka')
-		self['Middle East'] = Territory('Middle East')
-		self['Mongolia'] = Territory('Mongolia')
-		self['Siam'] = Territory('Siam')
-		self['Siberia'] = Territory('Siberia')
-		self['Ural'] = Territory('Ural')
-		self['Yakutsk'] = Territory('Yakutsk')
-		
 		continent = (
 		self['Afghanistan'],
 		self['China'],
@@ -172,11 +178,6 @@ class StandardBoard(Board):
 		self['Asia'] = Continent('Asia', 7, continent)
 		
 		#Australia/Oceania
-		self['Eastern Australia'] = Territory('Eastern Australia')
-		self['Indonesia'] = Territory('Indonesia')
-		self['New Guinea'] = Territory('New Guinea')
-		self['Western Australia'] = Territory('Western Australia')
-		
 		continent = (
 		self['Eastern Australia'],
 		self['Indonesia'],
@@ -184,5 +185,3 @@ class StandardBoard(Board):
 		self['Western Australia'])
 		
 		self['Australia'] = Continent('Australia', 2, continent)
-		
-		#Now we add the borders and sea lines to connect them
