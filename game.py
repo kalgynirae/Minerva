@@ -115,73 +115,45 @@ class StandardBoard(Board):
 		
 		#Now, we set up the continents
 		#First, North America
-		continent = (
-		self['Alaska'],
-		self['Alberta'],
-		self['Central America'],
-		self['Eastern United States'],
-		self['Greenland'],
-		self['Northwest Territory'],
-		self['Ontario'],
-		self['Quebec'],
-		self['Western United States'])
+		continent = []
+		for n in names[0:9]:
+			continent.append(self[n])
 		
 		self['North America'] = Continent('North America', 5, continent)
 		
 		#Next, South America
-		continent = (
-		self['Argentina'],
-		self['Brazil'],
-		self['Peru'],
-		self['Venezuela'])
+		continent = []
+		for n in names[9:13]:
+			continent.append(self[n])
 		
 		self['South America'] = Continent('South America', 2, continent)
 		
 		#Europe
-		continent = (
-		self['Great Britain'],
-		self['Iceland'],
-		self['Northern Europe'],
-		self['Scandinavia'],
-		self['Southern Europe'],
-		self['Ukraine'],
-		self['Western Europe'])
+		continent = []
+		for n in names[13:20]:
+			continent.append(self[n])
 		
 		self['Europe'] = Continent('Europe', 5, continent)
 		
 		#Africa
-		continent = (
-		self['Congo'],
-		self['East Africa'],
-		self['Egypt'],
-		self['Madagascar'],
-		self['North Africa'],
-		self['South Africa'])
+		continent = []
+		for n in names[20:26]:
+			continent.append(self[n])
 		
 		self['Africa'] = Continent('Africa', 3, continent)
 		
 		#Asia
-		continent = (
-		self['Afghanistan'],
-		self['China'],
-		self['India'],
-		self['Irkutsk'],
-		self['Japan'],
-		self['Kamchatka'],
-		self['Middle East'],
-		self['Mongolia'],
-		self['Siam'],
-		self['Siberia'],
-		self['Ural'],
-		self['Yakutsk'])
+		continent = []
+		for n in names[26:38]:
+			continent.append(self[n])
 		
 		self['Asia'] = Continent('Asia', 7, continent)
 		
 		#Australia/Oceania
-		continent = (
-		self['Eastern Australia'],
-		self['Indonesia'],
-		self['New Guinea'],
-		self['Western Australia'])
+		continent = []
+		for n in names[38:42]:
+			continent.append(self[n])
 		
-		self['Australia'] = Continent('Australia', 2, continent)
+        self['Australia'] = Continent('Australia', 2, continent)
+        
+        #TO DO: Add borders and sea lines
