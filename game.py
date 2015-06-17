@@ -185,3 +185,5 @@ class StandardBoard(Board):
 		self['Western Australia'])
 		
 		self['Australia'] = Continent('Australia', 2, continent)
+		
+		#TODO: Add borders and sea lines between territories
