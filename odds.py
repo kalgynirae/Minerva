@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 """
 This module defines functions used to calculate the odds of possible outcomes
 in Risk battles, invasions, and campaigns.
