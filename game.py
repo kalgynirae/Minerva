@@ -23,7 +23,7 @@ class Territory():
     #TODO: Add __repr__
     
     def __str__(self):
-        return '%s %s %d' % (self.name, self.owner, self.armies)
+        return '"%s" %s %d' % (self.name, self.owner, self.armies)
 
 class Continent():
     """
