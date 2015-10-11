@@ -134,30 +134,3 @@ def calculate_invasion(attackers, defenders, chance=1):
         outcome_list.append((key[0], key[1], outcomes[key] * chance))
     
     return tuple(outcome_list)
-
-def calculate_campaign(attackers, territories, inclusive=false):
-    """
-    Accepts a number of attackers and a sequence of territories to be invaded,
-    returns odds of all possible outcomes of the invasion sequence, or
-    campaign.
-    """
-    # If the number of attackers doesn't include the unit left behind, add it
-    if not inclusive:
-        attackers += 1
-    
-    # Make sure all the unit counts are positive integers
-    if attackers <= 1 or attackers % 1 != 0:
-        return None
-    
-    for defenders in territories
-        if defenders <= 0 or defenders % 1 != 0:
-            return None
-    
-    # Initialize the variables used for calculation
-    # The list of final outcomes
-    outcomes = []
-    # Add a dict for each territory from the origin up to the last target
-    for t in range(len(territories)):
-        outcomes.append({})
-        
-    # Add a dict for the final target (if the campaign succeeds)
