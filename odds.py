@@ -40,6 +40,7 @@ casualty_odds = (
 )
 )
 
+# TODO: change calculate_battle to return a dictionary instead of a tuple
 def calculate_battle(attackers, defenders, chance=1):
     """
     Accepts a battle scenario and returns the probabilties of possible outcomes
@@ -48,6 +49,8 @@ def calculate_battle(attackers, defenders, chance=1):
     # First we check if either of the arguments are incorrect
     if attackers <= 0 or defenders <= 0:
         return None # I should replace this with more pythonic error handling
+    
+    #TODO add integer checks for arguments and a check for 0 < chance <= 1
     
     # Now that we're sure the arguments are valid, find the correct scenario
     # Assign the correct attacker number (according to the battle maximum)
@@ -74,63 +77,74 @@ def calculate_battle(attackers, defenders, chance=1):
     # Return the results in a tuple (so that they're immutable)
     return tuple(results)
 
-def calculate_invasion(attackers, defenders, chance=1):
+def calculate_invasion(attackers, defenders):
     """
-    Accepts an invasion scenario (number of attackers & defenders) and returns
-    the probabilities of all possible outcomes
+    A simple prototype for the calculate_invasion fundtion using the graph/
+    table method.
     """
-    # First, check if the arguments are both counting numbers
-    if attackers < 1 or defenders < 1:
-        return None
     
-    if attackers % 1 != 0 or defenders % 1 != 0:
-        return None
+    # TODO: add parameter range checks (positive integers, etc.)
     
-    # Create the initial scenario, the beginning of the battle, with a
-    # probability of 1
-    scenarios = [(attackers, defenders, 1)]
+    # Create a grid of possible "states" of the invasion and their odds
+    # These states are referenced with odds_grid[attackers][defenders]
+    odds_grid = [[0 for y in range(defenders+1)] for x in range(attackers+1)]
+    # Set the probability of the initial state of the invasion to 100%
+    odds_grid[attackers][defenders] = 1
     
-    # Initialize a dictionary to store the possible outcomes' probabilities
+    # DEBUGGING
+    for col in odds_grid: print(col)
+    
+    # Initialize the dictionary of outcomes and probabilities we'll return
     outcomes = {}
-    # For each scenario in which the attacker eliminates every defending army...
-    for n in range(attackers):
-        # ...set the probability to 0 (we don't have any probability data yet)
-        outcomes[(n+1, 0)] = 0
     
-    # For each scenario in which the defender eliminates every attacking army...
-    for n in range(defenders):
-        # ...set the probability to 0 (we don't have any probability data yet)
-        outcomes[(0, n+1)] = 0
+    # Loop through the grid, from the top-right to the lower-left, calculating
+    # the probabilities of all possible states and outcomes of the battle.
     
-    # Loop through scenarios, calculating the results of a round of combat on
-    # each scenario until they are all reduced to possible outcomes
-    while scenarios:
-        s = scenarios.pop() # Remove the last scenario from the list
-        # Loop through its its possible outcomes after one round of combat
-        for p in calculate_battle(*s):
-            # If either the attacker or defender loses all their armies...
-            if p[0] == 0 or p[1] == 0:
-                # ...add this scenario's probability to the outcomes dictionary
-                outcomes[(p[0], p[1])] += p[2]
-            # If the battle hasn't ended yet, add the new scenario to scenarios
-            else: scenarios.append(p)
-        
-        scenarios.sort() # Sort the list now that it has new scenarios
-        # Combine duplicate scenarios' probabilities in a new list
-        i = 0
-        while i < len(scenarios) - 1:
-            cur = scenarios[i]
-            nxt = scenarios[i+1]
-            if cur[0] == nxt[0] and cur[1] == nxt[1]:
-                scenarios[i] = (cur[0], cur[1], cur[2] + nxt[2])
-                scenarios.pop(i+1)
-            i += 1
+    # First, go from the top-right grid-square up until the middle diagonal
+    for distance in range(attackers):
+        # Loop through a diagonal a certain distance from the top-right square
+        for a, d in zip(range(attackers - distance, attackers+1), range(defenders, -1, -1)):
+            # If the invasion's done, add probability to outcomes
+            if a == 0 or d == 0:
+                outcomes[(a, d)] = odds_grid[a][d]
+                continue
+            
+            chance = odds_grid[a][d]
+            
+            # If the scenario's impossible, move on
+            if chance == 0: continue
+            
+            # If not, calculate probabilities of states arising from this one
+            for state in calculate_battle(a, d, chance):
+                # Add the probability to the proper odds_grid position
+                x = state[0]
+                y = state[1]
+                prob = state[2]
+                
+                odds_grid[x][y] += prob
     
-    # Convert the outcomes to a list and return it
-    outcome_list = []
-    for key in sorted(outcomes):
-        # multiply the probability of the specific outcome by chance, the
-        # probability that the given invasion happens at all
-        outcome_list.append((key[0], key[1], outcomes[key] * chance))
+    # Now continue from the middle diagonal down to the bottom-left grid-square
+    for distance in range(defenders, -1, -1):
+        # Loop through a diagonal of the grid, calculating probabilities
+        for a, d in zip(range(attackers + 1), range(distance, -1, -1)):
+            # If the invasion's done, add probability to outcomes
+            if a == 0 or d == 0:
+                outcomes[(a, d)] = odds_grid[a][d]
+                continue
+            
+            chance = odds_grid[a][d]
+            
+            # If the scenario's impossible, move on
+            if chance == 0: continue
+            
+            # If not, calculate probabilities of states arising from this one
+            for state in calculate_battle(a, d, chance):
+                # Add the probability to the proper odds_grid position
+                x = state[0]
+                y = state[1]
+                prob = state[2]
+                
+                odds_grid[x][y] += prob
     
-    return tuple(outcome_list)
+    # Finally, return the possible outcomes and their probabilities
+    return outcomes
