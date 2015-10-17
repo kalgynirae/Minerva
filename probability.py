@@ -77,7 +77,7 @@ def calculate_invasion(attackers, defenders, chance=1):
     # Set the probability for the initial state (usually 100%)
     odds_grid[attackers][defenders] = chance
     
-    # Initialize the dictionary of outcomes and probabilities
+    # Initialize the dictionary of outcomes (keys) and probabilities (values)
     outcomes = {}
     
     # Loop through the grid, from the top-right to the lower-left, calculating
@@ -91,13 +91,13 @@ def calculate_invasion(attackers, defenders, chance=1):
             # Retrieve the probability of the current state
             chance = odds_grid[a][d]
             
+            # If the current state's impossible, skip it
+            if not chance: continue
+            
             # If the current state is final, add its probability to outcomes
             if a == 0 or d == 0:
                 outcomes[(a, d)] = chance
                 continue
-            
-            # If the current state's impossible, skip it
-            if not chance: continue
             
             # If not, calculate probabilities of states arising from this one
             for state in calculate_battle(a, d, chance):
@@ -109,20 +109,20 @@ def calculate_invasion(attackers, defenders, chance=1):
                 odds_grid[x][y] += prob
     
     # Now continue from the middle diagonal down to the bottom-left grid-square
-    for distance in range(defenders, -1, -1):
+    for dis in range(defenders, -1, -1):
         # Loop through a diagonal a certain distance from the grid's lower-left
-        diag = zip(range(attackers + 1), range(distance, -1, -1))
+        diag = zip(range(attackers + 1), range(dis, -1, -1))
         for a, d in diag:
             # Retrieve the probability of the current state
             chance = odds_grid[a][d]
+            
+            # If the current state's impossible, skip it
+            if not chance: continue
             
             # If the current state is final, add its probability to outcomes
             if a == 0 or d == 0:
                 outcomes[(a, d)] = chance
                 continue
-            
-            # If the current state's impossible, skip it
-            if not chance: continue
             
             # If not, calculate probabilities of states arising from this one
             for state in calculate_battle(a, d, chance):
