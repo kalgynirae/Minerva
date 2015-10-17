@@ -96,8 +96,8 @@ def calculate_invasion(attackers, defenders, chance=1):
                 outcomes[(a, d)] = chance
                 continue
             
-            # If the current state's impossible, skip the diagonal
-            if not chance: break
+            # If the current state's impossible, skip it
+            if not chance: continue
             
             # If not, calculate probabilities of states arising from this one
             for state in calculate_battle(a, d, chance):
@@ -121,8 +121,8 @@ def calculate_invasion(attackers, defenders, chance=1):
                 outcomes[(a, d)] = chance
                 continue
             
-            # If the current state's impossible, skip the diagonal
-            if not chance: break
+            # If the current state's impossible, skip it
+            if not chance: continue
             
             # If not, calculate probabilities of states arising from this one
             for state in calculate_battle(a, d, chance):
