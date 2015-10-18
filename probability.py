@@ -155,11 +155,5 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
                 
                 odds_grid[x][y] += prob
     
-    # DEBUGGING PRINT
-    for row in zip(*odds_grid):
-        for cell in row:
-            print(" %4.2f%%" % (cell * 100), end='')
-        print()
-    
     # Finally, return the possible outcomes and their probabilities
     return outcomes
