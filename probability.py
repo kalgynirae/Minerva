@@ -64,18 +64,22 @@ def calculate_battle(attackers, defenders, chance=1):
     # Return the outcomes in immutable, tuple form
     return tuple(outcomes)
 
-def calculate_invasion(attackers, defenders, chance=1):
+def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
     """
-    Accepts an invasion scenario (number of attackers and defenders) and its
-    probability. Returns a dictionary of all possible outcomes and their
-    probabilities.
+    Accepts an invasion scenario (number of attackers and defenders), including
+    when the attacker will retreat, and its chance of happening. Returns a
+    dictionary of all possible outcomes and their probabilities.
     """
+    
+    x_max = attackers - a_min
+    y_max = defenders - d_min
+    
     # Create a grid of possible states of the invasion and their odds
     # These states are referenced using odds_grid[attackers][defenders]
-    odds_grid = [[0 for y in range(defenders+1)] for x in range(attackers+1)]
+    odds_grid = [[0 for y in range(y_max+1)] for x in range(x_max+1)]
     
     # Set the probability for the initial state (usually 100%)
-    odds_grid[attackers][defenders] = chance
+    odds_grid[x_max][y_max] = chance
     
     # Initialize the dictionary of outcomes (keys) and probabilities (values)
     outcomes = {}
@@ -84,55 +88,116 @@ def calculate_invasion(attackers, defenders, chance=1):
     # the probabilities of all possible states and outcomes of the battle.
     
     # First, go from the top-right grid-square up until the middle diagonal
-    for dis in range(attackers):
+    for dis in range(x_max):
         # Loop through a diagonal a certain distance from the top-right square
-        diag = zip(range(attackers-dis, attackers+1), range(defenders, -1, -1))
-        for a, d in diag:
+        diag = zip(range(x_max-dis, x_max+1), range(y_max, -1, -1))
+        for x, y in diag:
             # Retrieve the probability of the current state
-            chance = odds_grid[a][d]
+            chance = odds_grid[x][y]
             
             # If the current state's impossible, skip it
             if not chance: continue
             
+            # Find the number of attacking and defending armies using minimums
+            a = a_min + x
+            d = d_min + y
+            
             # If the current state is final, add its probability to outcomes
-            if a == 0 or d == 0:
+            if x == 0 or y == 0:
                 outcomes[(a, d)] = chance
                 continue
             
             # If not, calculate probabilities of states arising from this one
             for state in calculate_battle(a, d, chance):
+                # If either force is below minimum, add it directly to outcomes
+                if state[0] < a_min or state[1] < d_min:
+                    outcomes[(state[0], state[1])] = state[2]
+                    continue
+                
                 # Add the probability to the proper odds_grid position
-                x = state[0]
-                y = state[1]
+                x = state[0] - a_min
+                y = state[1] - d_min
                 prob = state[2]
                 
                 odds_grid[x][y] += prob
     
     # Now continue from the middle diagonal down to the bottom-left grid-square
-    for dis in range(defenders, -1, -1):
+    for dis in range(y_max, -1, -1):
         # Loop through a diagonal a certain distance from the grid's lower-left
-        diag = zip(range(attackers + 1), range(dis, -1, -1))
-        for a, d in diag:
+        diag = zip(range(x_max + 1), range(dis, -1, -1))
+        for x, y in diag:
             # Retrieve the probability of the current state
-            chance = odds_grid[a][d]
+            chance = odds_grid[x][y]
             
             # If the current state's impossible, skip it
             if not chance: continue
             
+            # Find the number of attacking and defending armies using minimums
+            a = a_min + x
+            d = d_min + y
+            
             # If the current state is final, add its probability to outcomes
-            if a == 0 or d == 0:
+            if x == 0 or y == 0:
                 outcomes[(a, d)] = chance
                 continue
             
             # If not, calculate probabilities of states arising from this one
             for state in calculate_battle(a, d, chance):
+                # If either force is below minimum, add it directly to outcomes
+                if state[0] < a_min or state[1] < d_min:
+                    outcomes[(state[0], state[1])] = state[2]
+                    continue
+                
                 # Add the probability to the proper odds_grid position
-                x = state[0]
-                y = state[1]
+                x = state[0] - a_min
+                y = state[1] - d_min
                 prob = state[2]
                 
                 odds_grid[x][y] += prob
-                
+    
+    # DEBUGGING PRINT
+    for row in zip(*odds_grid):
+        for cell in row:
+            print(" %4.2f%%" % (cell * 100), end='')
+        print()
     
     # Finally, return the possible outcomes and their probabilities
     return outcomes
+
+# Testing code
+# Testing the new ability of calculate_invasion() to account for retreats
+if __name__ == "__main__":
+    # If our test works, both methods of calculating the probability should
+    # yield the same result
+    
+    attackers = 8
+    defenders = 3
+    a_min = 4 # The attacker wants to win with 5 armies
+    
+    print("Testing %d attackers vs. %d defenders (a_min = %d)\n"
+            % (attackers, defenders, a_min))
+    
+    # Calculate the probability of the attack succeeding by counting up the
+    # results of the calculate_invasion() call differently
+    outcomes = calculate_invasion(attackers, defenders)
+    
+    victory_prob = 0
+    for o in sorted(outcomes):
+        print("%s %.2f%%" % (o, outcomes[o] * 100))
+        if o[0] >= a_min and o[1] == 0:
+            victory_prob += outcomes[o]
+            print("victory_prob = %.2f%%" % (victory_prob * 100))
+    
+    print("The probability of success is %.2f%%\n" % (victory_prob * 100))
+    
+    # Now calculate probability of success using new method
+    outcomes = calculate_invasion(attackers, defenders, a_min)
+    
+    victory_prob = 0
+    for o in sorted(outcomes):
+        print("%s %.2f%%" % (o, outcomes[o] * 100))
+        if o[1] == 0:
+            victory_prob += outcomes[o]
+            print("victory_prob = %.2f%%" % (victory_prob * 100))
+    
+    print("The probability of success is %.2f%%" % (victory_prob * 100))
