@@ -87,11 +87,11 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
     # Loop through the grid, from the top-right to the lower-left, calculating
     # the probabilities of all possible states and outcomes of the battle.
     
-    # First, go from the top-right grid-square up until the middle diagonal
-    for dis in range(x_max):
-        # Loop through a diagonal a certain distance from the top-right square
-        diag = zip(range(x_max-dis, x_max+1), range(y_max, -1, -1))
-        for x, y in diag:
+    for dis in range(x_max + y_max + 1):
+        x_beg = max(0, x_max - dis)
+        y_beg = min(y_max, y_max - (dis - x_max))
+        diagonal = zip(range(x_beg, x_max + 1), range(y_beg, -1, -1))
+        for x, y in diagonal:
             # Retrieve the probability of the current state
             chance = odds_grid[x][y]
             
@@ -121,39 +121,6 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
                 
                 odds_grid[x][y] += prob
     
-    # Now continue from the middle diagonal down to the bottom-left grid-square
-    for dis in range(y_max, -1, -1):
-        # Loop through a diagonal a certain distance from the grid's lower-left
-        diag = zip(range(x_max + 1), range(dis, -1, -1))
-        for x, y in diag:
-            # Retrieve the probability of the current state
-            chance = odds_grid[x][y]
-            
-            # If the current state's impossible, skip it
-            if not chance: continue
-            
-            # Find the number of attacking and defending armies using minimums
-            a = a_min + x
-            d = d_min + y
-            
-            # If the current state is final, add its probability to outcomes
-            if x == 0 or y == 0:
-                outcomes[(a, d)] = chance
-                continue
-            
-            # If not, calculate probabilities of states arising from this one
-            for state in calculate_battle(a, d, chance):
-                # If either force is below minimum, add it directly to outcomes
-                if state[0] < a_min or state[1] < d_min:
-                    outcomes[(state[0], state[1])] = state[2]
-                    continue
-                
-                # Add the probability to the proper odds_grid position
-                x = state[0] - a_min
-                y = state[1] - d_min
-                prob = state[2]
-                
-                odds_grid[x][y] += prob
     
     # Finally, return the possible outcomes and their probabilities
     return outcomes
