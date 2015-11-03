@@ -1,12 +1,40 @@
 #!/usr/bin/python3
 
+import argparse as ap
 from probability import *
 
-# Get invasion scenario. TODO add CLI arg-parsing
-attackers = int(input("Enter the number of attackers: "))
-defenders = int(input("Enter the number of defenders: "))
-print()
+# First, handle argument parsing with the argparse module
+parser = ap.ArgumentParser(description="Calculates probabilities for Risk")
 
+# Arguments for number of attackers and defenders
+parser.add_argument("attackers", type=int,
+    help="number of attackers in the invasion scenario")
+
+parser.add_argument("defenders", type=int,
+    help="number of defenders in the invasion scenario")
+
+# Next, add arguments for attacker and defender minimums
+parser.add_argument("-l", "--loss_value", type=int, default=0, metavar="L",
+    help="minimum number of troops the attacker would like to win with. Any "
+         "outcomes in which the attacker's army size reaches or falls below "
+         "this number are counted as losses by the program.")
+
+parser.add_argument("-w", "--win_value", type=int, default=0, metavar="W",
+    help="number of troops the attacker wishes to reduce the defending army "
+         "to. Any outcomes in which the defender's army size reaches or "
+         "falls below this number are counted as wins by the program.")
+
+# Parse the arguments and extract all important data
+# TODO add error checking for arguments
+options = parser.parse_args();
+
+attackers = options.attackers
+defenders = options.defenders
+
+a_min = options.L
+d_min = options.W
+
+# We'll default to interactive mode for now (still just testing)
 # Have user input updates to invasion scenario and print updated probabilities
 while attackers and defenders:
     # Display the current scenario, paying attention to grammatical details
@@ -30,10 +58,9 @@ while attackers and defenders:
             victory_prob += outcomes[o]
     
     # Print the chances of a successful invasion as a percentage
-    # TODO: add a/an distinction. Would this be worth the effort?
     print("The invasion has a %.2f%% chance of success." % (victory_prob * 100))
     
-    # Receive a new command or scenario update. TODO: add histogram printing
+    # Receive a new command or scenario update.
     command = input("\n> ")
     
     if command == 'q': break
