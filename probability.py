@@ -93,10 +93,10 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
         diagonal = zip(range(x_beg, x_max + 1), range(y_beg, -1, -1))
         for x, y in diagonal:
             # Retrieve the probability of the current state
-            chance = odds_grid[x][y]
+            prob = odds_grid[x][y]
             
             # If the current state's impossible, skip it
-            if not chance: continue
+            if not prob: continue
             
             # Find the number of attacking and defending armies using minimums
             a = a_min + x
@@ -104,11 +104,11 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
             
             # If the current state is final, add its probability to outcomes
             if x == 0 or y == 0:
-                outcomes[(a, d)] = chance
+                outcomes[(a, d)] = prob
                 continue
             
             # If not, calculate probabilities of states arising from this one
-            for state in calculate_battle(a, d, chance):
+            for state in calculate_battle(a, d, prob):
                 # If either force is below minimum, add it directly to outcomes
                 if state[0] < a_min or state[1] < d_min:
                     outcomes[(state[0], state[1])] = state[2]
@@ -117,9 +117,8 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
                 # Add the probability to the proper odds_grid position
                 x = state[0] - a_min
                 y = state[1] - d_min
-                prob = state[2]
                 
-                odds_grid[x][y] += prob
+                odds_grid[x][y] += state[2]
     
     
     # Finally, return the possible outcomes and their probabilities
