@@ -25,6 +25,11 @@ parser.add_argument("-w", "--win_value", type=int, default=0, metavar="W",
          "to. Any outcomes in which the defender's army size reaches or "
          "falls below this number are counted as wins by the program.")
 
+# Add the -i flag for interactive mode
+parser.add_argument("-i", "--interactive", action="store_true",
+    help="use interactive mode. The program will prompt the user for updates "
+         "to the invasion, then outputs an updated probability of success.")
+
 # Parse the arguments and extract all important data
 # TODO add error checking for arguments
 options = parser.parse_args();
@@ -35,5 +40,12 @@ defenders = options.defenders
 a_min = options.loss_value
 d_min = options.win_value
 
-# Just do interactive mode for now
-interactive_mode(attackers, defenders, a_min, d_min)
+interactive = options.interactive
+
+# Do interactive mode if the user used the -i flag
+if interactive:
+    interactive_mode(attackers, defenders, a_min, d_min)
+#Otherwise, just calculate and print the odds of success
+else:
+    odds = calculate_invasion(attackers, defenders, a_min, d_min)
+    print_odds(odds)

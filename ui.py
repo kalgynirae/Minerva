@@ -34,7 +34,7 @@ def print_odds(outcomes, a_min=0, d_min=0):
     
     # Print the chances of a successful invasion as a percentage
     percent = victory_prob * 100
-    print("The invasion has a %.2f%% chance of success." % percent)
+    print("The invasion has a %.1f%% chance of success." % percent)
 
 def interactive_mode(attackers, defenders, a_min=0, d_min=0):
     while attackers > a_min and defenders > d_min:
