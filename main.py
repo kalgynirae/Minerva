@@ -56,7 +56,6 @@ parser.add_argument("-i", "--interactive", action="store_true",
          "to the invasion, then outputs an updated probability of success.")
 
 # Parse the arguments and extract all important data
-# TODO add error checking for arguments (minimums below attackers/defenders)
 options = parser.parse_args();
 
 attackers = options.attackers
@@ -67,6 +66,17 @@ d_min = options.win_value
 
 interactive = options.interactive
 
+# Make sure that the minimums are less than the troop numbers
+# If so, print an error message and exit
+if attackers <= a_min:
+    error_msg = "the argument loss_value must be less than attackers"
+    parser.error(error_msg)
+
+if defenders <= d_min:
+    error_msg = "the argument win_value must be less than defenders"
+    parser.error(error_msg)
+
+# Now that we've ensured the arguments are valid, let's use them!
 # Do interactive mode if the user used the -i flag
 if interactive:
     interactive_mode(attackers, defenders, a_min, d_min)
