@@ -49,3 +49,26 @@ The invasion has a 50.7% chance of success.
 In the above command, the -r option is the *retreat value*. This means that any
 scenario in which the attacking force shrinks to 7 or less before eliminating
 the defenders counts as a loss where the attacker retreats.
+
+The program can also do the opposite. In a different scenario, suppose that
+Green has 7 units in a territory. In an adjacent territory, Blue has a force of
+5 units that Green wants to reduce to 2 so that Red, her ally, can conquer the
+territory on his next turn. To find the odds of successfully wearing down the
+Blue force to 2 or lower, Green can run this command:
+
+```
+$ ./main.py 6 5 -g 2
+The invasion has a 80.0% chance of success.
+```
+
+Now Green knows that, if she's willing to sacrifice her entire attacking force,
+she has an 80% chance of reducing Blue's force to only 2 units. The -g option,
+the 2 in this command, is the *goal value* of the attack, another name for the
+intended number of defenders at the attack's end.
+
+Note that it's possible for Green to reduce Blue's force to 1 below the
+goal value (in this case, 1) because 2 units are lost each round of combat.
+These scenarios are included in the probability calculation, so if you intend
+to reduce a territory's force without conquering it, use ```-g 2``` instead of
+```-g 1```, which would include "accidentally" taking the territory as a 
+successful outcome.
