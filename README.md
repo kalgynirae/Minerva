@@ -1,18 +1,18 @@
-# Risk
-This project is a tool to calculate probabilities of invasions in the board
-game _Risk_. Not only can the tool output the exact probability of success for
-a given attack, it can also calculate the probability of winning with a certain
+# Minerva
+Minerva is a tool to calculate probabilities of invasions in the board game
+_Risk_. Not only can minerva output the exact probability of success for a
+given attack, it can also calculate the probability of winning with a certain
 number of troops left and/or wearing the enemy's forces down to a specified
 number of units. It also has an interactive mode for reevaluating the
 likelihood of an attack's success as it is underway.
 
 ##Installation
-You will need Python 3 to use this tool. For now, there's no easy installation
+You will need Python 3 to use minerva. For now, there's no easy installation
 method, so just download the scripts and drop them in /usr/local/bin.
 
 ##Usage
 ###Basic Invasion Success Probability
-The most basic function of the tool is calculating an attack's probability of
+The most basic function of minerva is calculating an attack's probability of
 success.
 
 Suppose the red player planned to invade a territory held by 5 blue units from
@@ -20,7 +20,7 @@ a territory containing 12. Because one unit must remain in the attacking
 country, Red has an attacking force of 11. To find the likelihood of taking
 Blue's territory, Red could run
 
-    $ ./main.py 11 5
+    $ minerva 11 5
     11 vs. 5
     94.3%
 
@@ -38,7 +38,7 @@ this, and so will retreat if his attacking force (not including the one unit
 remaining behind) reaches 7 before Blue's forces are eliminated. To find the
 probability of taking the territory with at least 7 units, Red could do this:
 
-    $ ./main.py 11 5 -r 7
+    $ minerva 11 5 -r 7
     11 vs. 5
     r: 7
     50.7%
@@ -54,7 +54,7 @@ Green has 7 units in a territory. In an adjacent territory, Blue has a force of
 territory on his next turn. To find the odds of successfully wearing down the
 Blue force to 2 or lower, Green can run this command:
 
-    $ ./main.py 6 5 -g 2
+    $ minerva 6 5 -g 2
     6 vs. 5
     g: 2
     80.0%
@@ -74,14 +74,14 @@ successful outcome.
 The goal and retreat value options can be combined. If you want to wear down an
 opponent's forces without losing too many of your own, run a command such as
 
-    $ ./main.py 10 6 -g 2 -r 5
+    $ minerva 10 6 -g 2 -r 5
     10 vs. 6
     r: 5
     g: 2
     69.1%
 
 ###Interactive Mode
-The above uses of the tool are great for evaluating a potential attack, but
+The above uses of minerva are great for evaluating a potential attack, but
 aren't very useful once an attack is underway. If you need the odds of success
 multiple times for the same invasion, typing an entire command with the
 appropriate ```-g``` and ```-r``` arguments can be tedious.
@@ -93,7 +93,7 @@ prints an updated probability of success. When using interactive mode, enter
 ```t``` if it's a tie (each player loses one unit). Here's an example of
 interactive mode in action:
 
-    $ ./main.py 7 5 -i
+    $ minerva 7 5 -i
     7 vs. 5
     73.6%
     > t

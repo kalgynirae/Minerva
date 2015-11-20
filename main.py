@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 
 import argparse as ap
-from ui import *
+from user_interface import *
 
 # First, handle argument parsing with the argparse module
 
