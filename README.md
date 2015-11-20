@@ -21,7 +21,8 @@ country, Red has an attacking force of 11. To find the likelihood of taking
 Blue's territory, Red could run
 
     $ ./main.py 11 5
-    The invasion has a 94.3% chance of success.
+    11 vs. 5
+    94.3%
 
 and immediately know his chances of victory.
 
@@ -38,7 +39,9 @@ remaining behind) reaches 7 before Blue's forces are eliminated. To find the
 probability of taking the territory with at least 7 units, Red could do this:
 
     $ ./main.py 11 5 -r 7
-    The invasion has a 50.7% chance of success.
+    11 vs. 5
+    r: 7
+    50.7%
 
 In the above command, the -r option is the *retreat value*. This means that any
 scenario in which the attacking force shrinks to 7 or less before eliminating
@@ -52,7 +55,9 @@ territory on his next turn. To find the odds of successfully wearing down the
 Blue force to 2 or lower, Green can run this command:
 
     $ ./main.py 6 5 -g 2
-    The invasion has a 80.0% chance of success.
+    6 vs. 5
+    g: 2
+    80.0%
 
 Now Green knows that, if she's willing to sacrifice her entire attacking force,
 she has an 80% chance of reducing Blue's force to only 2 units. The -g option,
@@ -70,7 +75,10 @@ The goal and retreat value options can be combined. If you want to wear down an
 opponent's forces without losing too many of your own, run a command such as
 
     $ ./main.py 10 6 -g 2 -r 5
-    The invasion has a 69.1% chance of success.
+    10 vs. 6
+    r: 5
+    g: 2
+    69.1%
 
 ###Interactive Mode
 The above uses of the tool are great for evaluating a potential attack, but
@@ -85,30 +93,19 @@ prints an updated probability of success. When using interactive mode, enter
 ```t``` if it's a tie (each player loses one unit). Here's an example of
 interactive mode in action:
 
-    $ ./main.py 10 6 -r 5 -i
-    10 attackers vs. 6 defenders
-    The attacker wants to win with at least 5 units.
-    The invasion has a 52.4% chance of success.
-    
+    $ ./main.py 7 5 -i
+    7 vs. 5
+    73.6%
     > t
-    9 attackers vs. 5 defenders
-    The attacker wants to win with at least 5 units.
-    The invasion has a 50.7% chance of success.
-    
+    6 vs. 4
+    74.5%
     > a
-    9 attackers vs. 3 defenders
-    The attacker wants to win with at least 5 units.
-    The invasion has a 76.0% chance of success.
-    
+    6 vs. 2
+    93.4%
     > t
-    8 attackers vs. 2 defenders
-    The attacker wants to win with at least 5 units.
-    The invasion has a 77.7% chance of success.
-    
-    > d
-    6 attackers vs. 2 defenders
-    The attacker wants to win with at least 5 units.
-    The invasion has a 37.2% chance of success.
-    
+    5 vs. 1
+    99.0%
     > a
-    The attacker has won with 6 armies.
+    5 vs. 0
+
+Both the ```-r``` and ```-g``` flags are compatible with interactive mode.

@@ -53,6 +53,10 @@ parser.add_argument('-i', '--interactive', action='store_true',
     help='use interactive mode. The program will prompt the user for updates '
          'to the invasion, then outputs an updated probability of success.')
 
+# Add a -v flag for verbosity
+parser.add_argument('-v', '--verbose', action='store_true',
+    help='verbosely print probabilities and unit counts')
+
 # Parse the arguments and extract all important data
 options = parser.parse_args();
 
@@ -63,6 +67,7 @@ a_min = options.retreat
 d_min = options.goal
 
 interactive = options.interactive
+verbose = options.verbose
 
 # Make sure that the minimums are less than the troop numbers
 # If not, print an error message and exit
@@ -77,8 +82,9 @@ if defenders <= d_min:
 # Now that we've ensured the arguments are valid, let's use them!
 # Do interactive mode if the user used the -i flag
 if interactive:
-    interactive_mode(attackers, defenders, a_min, d_min)
+    interactive_mode(attackers, defenders, a_min, d_min, verbose)
 #Otherwise, just calculate and print the odds of success
 else:
+    print_scenario(attackers, defenders, a_min, d_min, verbose)
     odds = calculate_invasion(attackers, defenders, a_min, d_min)
-    print_odds(odds, d_min)
+    print_odds(odds, d_min, verbose)
