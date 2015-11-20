@@ -25,8 +25,9 @@ def print_scenario(attackers, defenders, a_min=0, d_min=0):
     if d_min:
         print("The attacker wants to reduce the defender to %d units." % d_min)
 
-def print_odds(outcomes, a_min=0, d_min=0):
+def print_odds(outcomes, d_min):
     # Add up the odds of all the outcomes favorable to the attacker
+    # We don't need a_min, only d_min because it takes precedence
     victory_prob = 0
     for o in outcomes:
         if o[1] <= d_min:
@@ -43,7 +44,7 @@ def interactive_mode(attackers, defenders, a_min=0, d_min=0):
         
         # Calculate and print the probabilities of the scenario's outcomes
         outcomes = calculate_invasion(attackers, defenders, a_min, d_min)
-        print_odds(outcomes, a_min, d_min)
+        print_odds(outcomes, d_min)
         
         # Receive a new command or scenario update.
         command = input("\n> ")
