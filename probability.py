@@ -71,11 +71,12 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
     dictionary of all possible outcomes and their probabilities.
     """
     
+    # Create a grid of possible states of the invasion and their odds.
+    # Only states within the boundaries of starting troop numbers and troop
+    # minimums are included in the grid. Possible scenarios are referenced
+    # using odds_grid[attackers - a_min][defenders - d_min]
     x_max = attackers - a_min
     y_max = defenders - d_min
-    
-    # Create a grid of possible states of the invasion and their odds
-    # These states are referenced using odds_grid[attackers][defenders]
     odds_grid = [[0 for y in range(y_max+1)] for x in range(x_max+1)]
     
     # Set the probability for the initial state (usually 100%)
@@ -86,16 +87,16 @@ def calculate_invasion(attackers, defenders, a_min=0, d_min=0, chance=1):
     
     # Loop through the grid, from the top-right to the lower-left, calculating
     # the probabilities of all possible states and outcomes of the battle.
-    
-    for dis in range(x_max + y_max + 1):
-        x_beg = max(0, x_max - dis)
-        y_beg = min(y_max, y_max - (dis - x_max))
-        diagonal = zip(range(x_beg, x_max + 1), range(y_beg, -1, -1))
+    for distance in range(x_max + y_max + 1):
+        # Create a diagonal a distance from the top-right and loop through it
+        x_start = max(0, x_max - distance)
+        y_start = min(y_max, y_max - (distance - x_max))
+        diagonal = zip(range(x_start, x_max + 1), range(y_start, -1, -1))
         for x, y in diagonal:
             # Retrieve the probability of the current state
             prob = odds_grid[x][y]
             
-            # If the current state's impossible, skip it
+            # If the current state will never happen, skip it
             if not prob: continue
             
             # Find the number of attacking and defending armies using minimums
