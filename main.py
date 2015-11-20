@@ -37,18 +37,16 @@ parser.add_argument("defenders", type=positive_int,
     help="number of defenders in the invasion scenario")
 
 # Next, add arguments for attacker and defender minimums
-parser.add_argument("-l", "--loss_value", type=positive_int, default=0,
-    metavar="L",
-    help="minimum number of troops the attacker would like to win with. Any "
-         "outcomes in which the attacker's army size reaches or falls below "
-         "this number before winning the invasion are counted as losses by "
-         "the program.")
+parser.add_argument("-r", "--retreat", type=positive_int, default=0,
+    metavar="R",
+    help="represents when the attacker will retreat. Any scenarios in which "
+         "the attacking force reaches or falls below this number of units are "
+         "counted as unsuccessful by the program.")
 
-parser.add_argument("-w", "--win_value", type=positive_int, default=0,
-    metavar="W",
+parser.add_argument("-g", "--goal", type=positive_int, default=0, metavar="G",
     help="number of troops the attacker wishes to reduce the defending army "
          "to. Any outcomes in which the defender's army size reaches or "
-         "falls below this number are counted as wins by the program.")
+         "falls below this number are counted as successful by the program.")
 
 # Add the -i flag for interactive mode
 parser.add_argument("-i", "--interactive", action="store_true",
@@ -61,8 +59,8 @@ options = parser.parse_args();
 attackers = options.attackers
 defenders = options.defenders
 
-a_min = options.loss_value
-d_min = options.win_value
+a_min = options.retreat
+d_min = options.goal
 
 interactive = options.interactive
 
