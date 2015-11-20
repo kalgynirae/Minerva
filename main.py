@@ -48,4 +48,4 @@ if interactive:
 #Otherwise, just calculate and print the odds of success
 else:
     odds = calculate_invasion(attackers, defenders, a_min, d_min)
-    print_odds(odds)
+    print_odds(odds, d_min)
