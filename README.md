@@ -42,10 +42,10 @@ remaining behind) reaches 7 before Blue's forces are eliminated. To find the
 probability of taking the territory with at least 7 units, Red could do this:
 
 ```
-$ ./main.py 11 5 -l 7
+$ ./main.py 11 5 -r 7
 The invasion has a 50.7% chance of success.
 ```
 
-In the above command, the -l option is the *loss value*. This means that any
+In the above command, the -r option is the *retreat value*. This means that any
 scenario in which the attacking force shrinks to 7 or less before eliminating
 the defenders counts as a loss where the attacker retreats.
