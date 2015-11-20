@@ -8,5 +8,4 @@ likelihood of an attack's success *as it is underway*.
 
 ##Installation
 You will need Python 3 to use this tool. For now, there's no easy installation
-method other than downloading the scripts and dropping them in 
-```/usr/local/bin```.
+method other than downloading the scripts and dropping them in /usr/local/bin.
