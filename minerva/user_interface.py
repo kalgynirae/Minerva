@@ -4,7 +4,7 @@
 This module defines user interface functions for the Risk program
 """
 
-from probability import *
+from .probability import *
 
 def print_scenario(attackers, defenders, a_min=0, d_min=0, verbose=False):
     """
